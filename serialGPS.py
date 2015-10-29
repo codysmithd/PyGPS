@@ -44,7 +44,6 @@ class serialGPS:
     def close(self):
         if self._dataThread:
             self._dataThread.stop()
-            #self._dataThread.join()
             self._dataThread = None
         if self._ser:
             self._ser.close()
@@ -69,7 +68,9 @@ class serialDataThread(Thread):
         while not self._stop.isSet() and len(line) > 0 and self.sGPS._ser != None:
             if isGGA(line):
                 gga = GGA(line)
-                self.sGPS.data.append(gga)
+                self.sGPS.sat_fix = gga.fix_quality != 0
+                if self.sGPS.sat_fix:
+                    self.sGPS.data.append(gga)
             try:
                 line = self.sGPS._ser.readline().decode().strip()
             except TypeError:
