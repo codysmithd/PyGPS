@@ -33,20 +33,45 @@ class GGA :
         if not len(s) == 15 or not s[0] == '$GPGGA':
             raise ValueError('Invalid input string for NMEA GGA object, given string was: ' + inputString)
         else:
-            self.time = s[1]
-            self.lat = float(s[2][:2]) + float(s[2][2:])/60
-            if(s[3] == 'S'):
-                self.lat = -self.lat
-            self.lng = float(s[4][:3]) + float(s[4][3:])/60
-            if(s[5] == 'E'):
-                self.lng = -self.lng
-            self.fix_quality = s[6]
-            self.num_sats = int(s[7])
-            self.hdp = float(s[8])
-            self.alt = float(s[9])
-            self.geoid_height = float(s[11])
-            self.checksum = s[14]
+            try:
+                self.time = s[1]
+                self.lat = float(s[2][:2]) + float(s[2][2:])/60
+                if(s[3] == 'S'):
+                    self.lat = -self.lat
+                self.lng = float(s[4][:3]) + float(s[4][3:])/60
+                if(s[5] == 'E'):
+                    self.lng = -self.lng
+                self.fix_quality = s[6]
+                self.num_sats = int(s[7])
+                self.hdp = float(s[8])
+                self.alt = float(s[9])
+                self.geoid_height = float(s[11])
+                self.checksum = s[14]
+            except ValueError:
+                if not len(self.time):
+                    self.time = ''
+                if not hasattr(self, 'lat') or not self.lat:
+                    self.lat = 0.0
+                if not hasattr(self, 'lng') or not self.lng:
+                    self.lng = 0.0
+                if not hasattr(self, 'fix_quality') or not self.fix_quality:
+                    self.fix_quality = 0
+                if not hasattr(self, 'num_sats') or not self.num_sats:
+                    self.num_sats = 0
+                if not hasattr(self, 'hdp') or not self.hdp:
+                    self.hdp = 0.0
+                if not hasattr(self, 'alt') or not self.alt:
+                    self.alt = 0.0
+                if not hasattr(self, 'geoid_height') or not self.geoid_height:
+                    self.geoid_height = 0.0
+                if not hasattr(self, 'checksum') or not self.checksum:
+                    self.checksum = ''
 
     # Returns Point from self
     def getPoint(self):
         return Point(self.lat, self.lng, self.alt)
+
+# Given a line, decides if it is a GGA message
+def isGGA(line):
+    s = line.split(',')
+    return len(s) == 15 and s[0] == '$GPGGA'
