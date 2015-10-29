@@ -3,11 +3,11 @@ kmlIO.py
 Defines methods for inputting and outputting to kml
 '''
 
-import Point
+from NMEA import Point
 import xml.etree.ElementTree as ElementTree
 import xml.dom.minidom as minidom
 
-# Converts set of points to a KML file
+# Converts list of points to a KML file
 def pointsToKml(points, filename):
     root = ElementTree.Element("kml")
     root.attrib["xmlns"] = "http://www.opengis.net/kml/2.2"
