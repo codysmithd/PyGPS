@@ -13,6 +13,7 @@ class GGA :
         lat: Latitude (decimal value)
         lng: Longitude (decimal value)
         fix_quality:
+            0 = Error (no fix)
             1 = GPS fix (SPS)
             2 = DGPS fix
             3 = PPS fix
