@@ -68,7 +68,7 @@ class serialDataThread(Thread):
         while not self._stop.isSet() and len(line) > 0 and self.sGPS._ser != None:
             if isGGA(line):
                 gga = GGA(line)
-                self.sGPS.sat_fix = gga.fix_quality != 0
+                self.sGPS.sat_fix = (gga.fix_quality != 0)
                 if self.sGPS.sat_fix:
                     self.sGPS.data.append(gga)
             try:
