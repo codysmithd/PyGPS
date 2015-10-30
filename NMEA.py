@@ -54,10 +54,10 @@ class GGA :
                 self.time = s[1]
                 self.lat = float(s[2][:2]) + float(s[2][2:])/60
                 if(s[3] == 'S'):
-                    self.lat = -self.lat
+                    self.lat = -1 *self.lat
                 self.lng = float(s[4][:3]) + float(s[4][3:])/60
                 if(s[5] == 'E'):
-                    self.lng = -self.lng
+                    self.lng = -1 * self.lng
                 self.fix_quality = s[6]
                 self.num_sats = int(s[7])
                 self.hdp = float(s[8])
