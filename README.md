@@ -17,7 +17,7 @@ s.open()
 As messages come in from the GPS, serialGPS maintains the state of the module, and has the following attributes:
  - ```.sat_fix```, boolean indicating if the module has a satellite fix.
  - ```.data```, list of valid NMEA message objects recieved post satellite fix
- -
+ 
 Finally, when done reading from the port, simply call:
 ```python
 s.close()
