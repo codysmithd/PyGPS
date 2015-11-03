@@ -37,7 +37,6 @@ class serialGPS:
 
             if self._dataThread != None:
                 self.dataThread.stop()
-                #self.dataThread.join()
             self._dataThread = serialDataThread(self)
             self._dataThread.start()
         except serial.serialutil.SerialException:
@@ -83,7 +82,6 @@ class serialDataThread(Thread):
             try:
                 line = self.sGPS._ser.readline().decode().strip()
             except TypeError:
-                print('Serial GPS Data Thread: read line error')
                 line = ''
 
     def stop(self):
@@ -91,5 +89,5 @@ class serialDataThread(Thread):
 
 class SerialGPSOpenError(FileNotFoundError):
     '''
-    SerialGPSOpenError: for when serial port cannot be opened
+    SerialGPSOpenError: Error for when serial port cannot be opened
     '''
