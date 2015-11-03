@@ -1,19 +1,6 @@
 # PyGPS
 Python GPS tools. PyGPS contains the following:
 
-###NMEA
-Contains classes for NMEA sentences. Currently, supports:
-- **GGA**
-  - *time*: UTC time
-  - *lat*: Latitude (decimal value)
-  - *lng*: Longitude (decimal value)
-  - *fix_quality* (integer)
-  - *num_sats*: Number of satellites being tracked
-  - *hdp*: Horizontal dilution of position
-  - *alt*: Altitude, Meters, above mean sea level
-  - *geoid_height*: Height of geoid (mean sea level) above WGS84 ellipsoid
-  - *checkum*: message checksum
-
 ###serialGPS
 Provides interface with any serial-connected GPS module. The serialGPS object reads from the GPS on a separate thread. It is designed to be used in the following way:
 
@@ -36,8 +23,29 @@ Finally, when done reading from the port, simply call:
 s.close()
 ```
 
+###NMEA
+Contains classes for NMEA sentences and other relevant data. Currently contains:
+- **Point**
+  - *lat*: Latitude (decimal value)
+  - *lng*: Longitude (decimal value)
+  - *alt*: Altitude in meters
+- **GGA**
+  - *time*: UTC time
+  - *lat*: Latitude (decimal value)
+  - *lng*: Longitude (decimal value)
+  - *fix_quality* (integer)
+  - *num_sats*: Number of satellites being tracked
+  - *hdp*: Horizontal dilution of position
+  - *alt*: Altitude, Meters, above mean sea level
+  - *geoid_height*: Height of geoid (mean sea level) above WGS84 ellipsoid
+  - *checkum*: message checksum
+
 ###kmlIO
-Provides methods for convering PyGPS Points to KML and KMZ files.
+Provides methods for converting PyGPS data to KML files. These include:
+
+```pointsToKML(points, filename)```: Converts a list of ```PyGPS.NMEA.Point```s to points in a KML file
+
+```pathToKML(path, filename)```: Converts a list of ordered ```PyGPS.NMEA.Point```s to a path in a KML file
 
 ## Example program:
 ###recorder.py
