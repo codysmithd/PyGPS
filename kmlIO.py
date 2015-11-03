@@ -3,7 +3,7 @@ kmlIO.py
 Defines methods for inputting and outputting to kml
 '''
 
-from NMEA import Point
+from PyGPS.NMEA import Point
 import xml.etree.ElementTree as ElementTree
 import xml.dom.minidom as minidom
 
