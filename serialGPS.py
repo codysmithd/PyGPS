@@ -4,7 +4,7 @@ Defines a serial-connected GPS module
 Requires: pyserial (https://github.com/pyserial/pyserial)
 '''
 
-from NMEA import *
+from PyGPS.NMEA import *
 import serial
 import threading
 from threading import Thread
@@ -30,15 +30,24 @@ class serialGPS:
 
     # Opens the serial port, start thread to read lines and store data
     def open(self):
-        if self._ser != None:
-            self._ser.close()
-        self._ser = serial.Serial(self.port)
+        try:
+            if self._ser != None:
+                self._ser.close()
+            self._ser = serial.Serial(self.port)
 
-        if self._dataThread != None:
-            self.dataThread.stop()
-            #self.dataThread.join()
-        self._dataThread = serialDataThread(self)
-        self._dataThread.start()
+            if self._dataThread != None:
+                self.dataThread.stop()
+                #self.dataThread.join()
+            self._dataThread = serialDataThread(self)
+            self._dataThread.start()
+        except serial.serialutil.SerialException:
+            if self._ser != None:
+                self._ser.close()
+            self._ser = None
+            if self._dataThread != None:
+                self.dataThread.stop()
+            self._dataThread = None
+            raise SerialGPSOpenError()
 
     # Stops reading from the GPS and closes the serial port
     def close(self):
@@ -79,3 +88,8 @@ class serialDataThread(Thread):
 
     def stop(self):
         self._stop.set()
+
+class SerialGPSOpenError(FileNotFoundError):
+    '''
+    SerialGPSOpenError: for when serial port cannot be opened
+    '''
