@@ -17,6 +17,9 @@ class Point:
         self.lng = lng
         self.alt = alt
 
+    def __str__(self):
+        return '{0}, {1}, {2} meters'.format(self.lat, self.lng, self.alt)
+
     # Crude distance (in arbitrary units) to another point
     def getDistance(self, toPoint):
         return math.sqrt(math.pow((self.lat - toPoint.lat),2) + math.pow((self.lng - toPoint.lng),2))
@@ -54,7 +57,7 @@ class GGA :
                 self.time = s[1]
                 self.lat = float(s[2][:2]) + float(s[2][2:])/60
                 if(s[3] == 'S'):
-                    self.lat = -1 *self.lat
+                    self.lat = -1 * self.lat
                 self.lng = float(s[4][:3]) + float(s[4][3:])/60
                 if(s[5] == 'E'):
                     self.lng = -1 * self.lng
