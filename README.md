@@ -56,3 +56,6 @@ $ python examples/logger.py -port <serialPort> (-outputKML <outputfile>)
 ```
 
 If the optional argument ```-outputKML``` is not given, the points are simply output to the console when complete.
+
+- - -
+*Copywrite (c) 2015 Cody Smith, Apache License Version 2 (APLv2), see [LICENSE file](LICENSE)*
