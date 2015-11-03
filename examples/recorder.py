@@ -21,7 +21,6 @@ parser = argparse.ArgumentParser(description="""Waits for serial-connected GPS t
 get satellite fix and records points. After program is stopped,
 optionally outputs those points to either command line or KML file.""")
 parser.add_argument('-port', help='Path to port for serial connected GPS module (eg. /dev/tty-USB0)', required=True)
-parser.add_argument('-v', help='verbose mode, print extra data')
 parser.add_argument('-outputKML', help='(optional) filename for output KML')
 args = parser.parse_args()
 
