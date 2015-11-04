@@ -1,7 +1,7 @@
 '''
 recorder.py
 Example use of PyGPS to make a point recorder
-Usage: $python3 logger.py port [-outputKML <outputfile>]
+Usage: $python3 recorder.py port [-outputKML <outputfile>]
 '''
 
 import os.path
