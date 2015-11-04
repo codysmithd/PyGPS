@@ -60,10 +60,22 @@ Provides methods for converting PyGPS data to Keyhole Markup Language (KML) file
 Recorder is an example program which connects to a GPS module over serial, and records the incoming points until the user stops it. Usage is as follows:
 
 ```
-$ python examples/logger.py port [-outputKML <outputfile>]
+$ python examples/recorder.py port [-outputKML <outputfile>]
 ```
 
 If the optional argument ```-outputKML``` is not given, the points are simply output to the console when complete.
 
+With an output KML files specified, running recorder might look something like this:
+```
+Attempting to open serial port: /dev/tty.usbserial-AH02F1FF
+Serial Port open sucessfully! Waiting for satellite fix...
+Satellite Fix! Recording points.
+Press enter to stop recording: 
+Recorded 104 points
+```
+Uploading the KML file to Google MyMaps can help visualize the points:
+<img src="http://i.imgur.com/UkWLIyS.png"/>
+
+To see how recorder.py works, just [take a look at the source](examples/recorder.py)
 - - -
 *Copywrite (c) 2015 Cody Smith, Apache License Version 2 (APLv2), see [LICENSE file](LICENSE)*
