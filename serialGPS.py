@@ -18,6 +18,7 @@ class serialGPS:
         data: list of supported, valid NMEA objects received over the line (post sat_fix)
 
         _ser: (private) pyserial port
+        _dataThread: (private) serialDataThread
     '''
 
     def __init__(self, port=''):
@@ -28,8 +29,10 @@ class serialGPS:
         self._ser = None
         self._dataThread = None
 
-    # Opens the serial port, start thread to read lines and store data
     def open(self):
+        '''
+        Attempts to open the port (self.port) and starts to store data after fix.
+        '''
         try:
             if self._ser != None:
                 self._ser.close()
@@ -48,8 +51,10 @@ class serialGPS:
             self._dataThread = None
             raise SerialGPSOpenError()
 
-    # Stops reading from the GPS and closes the serial port
     def close(self):
+        '''
+        Stops reading from the serial connection, closes the serial port
+        '''
         if self._dataThread:
             self._dataThread.stop()
             self._dataThread = None
@@ -74,11 +79,11 @@ class serialDataThread(Thread):
         self._stop.clear()
         line = self.sGPS._ser.readline().decode().strip()
         while not self._stop.isSet() and len(line) > 0 and self.sGPS._ser != None:
-            if isGGA(line):
-                gga = GGA(line)
-                self.sGPS.sat_fix = (gga.fix_quality != 0)
+            x = getNMEA(line)
+            if type(x) is GGA:
+                self.sGPS.sat_fix = (x.fix_quality != 0)
                 if self.sGPS.sat_fix:
-                    self.sGPS.data.append(gga)
+                    self.sGPS.data.append(x)
             try:
                 line = self.sGPS._ser.readline().decode().strip()
             except TypeError:

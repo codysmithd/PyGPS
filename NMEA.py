@@ -20,8 +20,10 @@ class Point:
     def __str__(self):
         return '{0}, {1}, {2} meters'.format(self.lat, self.lng, self.alt)
 
-    # Crude distance (in arbitrary units) to another point
     def getDistance(self, toPoint):
+        '''
+        Gets the distance (in arbitrary units) to another point
+        '''
         return math.sqrt(math.pow((self.lat - toPoint.lat),2) + math.pow((self.lng - toPoint.lng),2))
 
 class GGA :
@@ -87,11 +89,25 @@ class GGA :
                 if not hasattr(self, 'checksum') or not self.checksum:
                     self.checksum = ''
 
-    # Returns Point from self
     def getPoint(self):
+        '''
+        Returns a Point version of itself
+        '''
         return Point(self.lat, self.lng, self.alt)
 
-# Given a line, decides if it is a GGA message
-def isGGA(line):
-    s = line.split(',')
-    return len(s) == 15 and s[0] == '$GPGGA'
+def getNMEA(line):
+    '''
+    Given a line, tries to make a NMEA object from it, or returns None.
+    Args:
+        line: NMEA sentence
+    Returns:
+        NMEA object if valid line (eg. GGA), None if not valid
+    '''
+    if not line:
+        return None
+    else:
+        s = line.split(',')
+        if len(s) == 15 and s[0] == '$GPGGA':
+            return GGA(line)
+        else:
+            return None
