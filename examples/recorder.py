@@ -1,7 +1,7 @@
 '''
 recorder.py
 Example use of PyGPS to make a point recorder
-Usage: $python3 logger.py -port <serialPort> (-outputKML <outputfile>)
+Usage: $python3 logger.py port [-outputKML <outputfile>]
 '''
 
 import os.path
@@ -18,10 +18,10 @@ from PyGPS.kmlIO import pointsToKml
 # Parser for arguments
 import argparse
 parser = argparse.ArgumentParser(description="""Waits for serial-connected GPS to
-get satellite fix and records points. After program is stopped,
+get satellite fix and then records points. After program is stopped,
 optionally outputs those points to either command line or KML file.""")
-parser.add_argument('-port', help='Path to port for serial connected GPS module (eg. /dev/tty-USB0)', required=True)
-parser.add_argument('-outputKML', help='(optional) filename for output KML')
+parser.add_argument('port', help='Path to port for serial connected GPS module (eg. /dev/tty-USB0)')
+parser.add_argument('-outputKML', help='filename for output KML')
 args = parser.parse_args()
 
 # Start program and input/output loop
