@@ -1,11 +1,10 @@
 #PyGPS
 Python GPS tools. PyGPS contains the following:
 
-[serialGPS](#serialGPS)
-
-[NMEA](#NMEA)
-
-[kmlIO](#kmlIO)
+**[serialGPS](#serialgps)**: Interface for serial connected GPS module
+**[NMEA](#nmea)**: NMEA sentence classes and parsers
+**[kmlIO](#kmlio)**: KML input and output functions
+**[Example Program](#example_program)**
 
 ###serialGPS
 Provides interface with any serial-connected GPS module. The serialGPS object reads from the GPS on a separate thread. It is designed to be used in the following way:
