@@ -1,12 +1,13 @@
 #PyGPS
-Python GPS tools. PyGPS contains the following:
+PyGPS is a package of GPS tools for Python. It contains the following:
 
-**[serialGPS](#serialgps)**: Interface for serial connected GPS module  
-**[NMEA](#nmea)**: NMEA sentence classes and parsers  
-**[kmlIO](#kmlio)**: KML input and output functions  
-**[Example Program](#example_program)**  
-
-###serialGPS
+**[serialGPS](#serialgps)**  
+**[NMEA](#nmea)**  
+**[kmlIO](#kmlio)**  
+**[Example Program](#example-program)**  
+  
+  
+##serialGPS
 Provides interface with any serial-connected GPS module. The serialGPS object reads from the GPS on a separate thread. It is designed to be used in the following way:
 
 ##### Requirement: [pyserial](https://github.com/pyserial/pyserial)
@@ -28,7 +29,7 @@ Finally, when done reading from the port, simply call:
 s.close()
 ```
 
-###NMEA
+##NMEA
 Contains classes for NMEA sentences and other relevant data. Currently contains:
 - **Point**
   - *lat*: Latitude (decimal value)
@@ -45,7 +46,7 @@ Contains classes for NMEA sentences and other relevant data. Currently contains:
   - *geoid_height*: Height of geoid (mean sea level) above WGS84 ellipsoid
   - *checkum*: message checksum
 
-###kmlIO
+##kmlIO
 Provides methods for converting PyGPS data to KML files. These include:
 
 ```pointsToKML(points, filename)```: Converts a list of ```PyGPS.NMEA.Point```s to points in a KML file
