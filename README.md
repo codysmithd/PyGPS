@@ -52,7 +52,7 @@ Provides methods for converting PyGPS data to KML files. These include:
 Recorder is an example program which connects to a GPS module over serial, and records the incoming points until the user stops it. Usage is as follows:
 
 ```
-$ python examples/logger.py -port <serialPort> (-outputKML <outputfile>)
+$ python examples/logger.py port [-outputKML <outputfile>]
 ```
 
 If the optional argument ```-outputKML``` is not given, the points are simply output to the console when complete.
