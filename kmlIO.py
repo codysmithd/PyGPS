@@ -76,6 +76,5 @@ def _getPathPlacemark(path):
     tessellate.text = "1"
     coordinates = ElementTree.SubElement(linestring, "coordinates")
     coordinates.text = ""
-    for key in path:
-        point = path[key]
-        coordinates.text += str(point.lng) + "," + str(point.lat) + ", "
+    for point in path:
+        coordinates.text += '{0}, {1}, '.format(point.lng, point.lat)
