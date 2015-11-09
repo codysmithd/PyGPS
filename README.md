@@ -46,6 +46,7 @@ Contains classes for dealing with NMEA sentences and other relevant data. Curren
   - *alt*: Altitude, Meters, above mean sea level
   - *geoid_height*: Height of geoid (mean sea level) above WGS84 ellipsoid
   - *checkum*: message checksum
+  - *valid*: Is the checksum valid, and was the object created ok otherwise
 
 ##kmlIO
 Provides methods for converting PyGPS data to Keyhole Markup Language (KML) files. Currently includes the following methods:
