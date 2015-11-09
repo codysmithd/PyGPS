@@ -48,6 +48,7 @@ class GGA :
         alt: Altitude, Meters, above mean sea level
         geoid_height: Height of geoid (mean sea level) above WGS84 ellipsoid
         checkum: message checksum
+        valid: is this a valid or invalid message (based on complete data and checksum)
     '''
 
     def __init__(self, inputString=''):
@@ -69,6 +70,8 @@ class GGA :
                 self.alt = float(s[9])
                 self.geoid_height = float(s[11])
                 self.checksum = s[14]
+                self.valid = _validateChecksum(inputString, self.checksum)
+
             except ValueError:
                 if not len(self.time):
                     self.time = ''
@@ -88,6 +91,7 @@ class GGA :
                     self.geoid_height = 0.0
                 if not hasattr(self, 'checksum') or not self.checksum:
                     self.checksum = ''
+                self.valid = False
 
     def getPoint(self):
         '''
@@ -97,7 +101,7 @@ class GGA :
 
 def getNMEA(line):
     '''
-    Given a line, tries to make a NMEA object from it, or returns None.
+    Given a line of text, tries to make a NMEA object from it, or returns None.
     Args:
         line: NMEA sentence
     Returns:
@@ -111,3 +115,24 @@ def getNMEA(line):
             return GGA(line)
         else:
             return None
+
+def _validateChecksum(line):
+    '''
+    Given a NMEA sentence line, validates the checksum
+    Args:
+        line: NMEA sentence
+    Returns:
+        True if valid, False otherwise
+    '''
+    try:
+        if line.index('$') == 0 and '*' in line:
+            check_against = line[1:line.index('*')]
+            checksum = int(line[line.index('*')+1:], 16)
+
+            result = 0
+            for char in check_against:
+                result = result ^ ord(char)
+
+            return checksum == result
+    except ValueError:
+        return False
