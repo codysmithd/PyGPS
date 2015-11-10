@@ -11,11 +11,13 @@ from threading import Thread
 
 class serialGPS:
     '''
-    serialGPS: Interface with a serial-connected GPS module
+    Interface with a serial-connected GPS module
+
     Attributes:
         port: serial port to connect to (eg. '/dev/ttyUSB0')
         sat_fix: (bool) does the GPS have a satellite fix yet?
-        data: list of supported, valid NMEA objects received over the line (post sat_fix)
+        data: list of supported, valid NMEA objects received over the line (post sat_fix).
+        Utilized when port is opened without an 'on_data_fn' to act as a message buffer.
 
         _ser: (private) pyserial port
         _dataThread: (private) serialDataThread
@@ -29,9 +31,15 @@ class serialGPS:
         self._ser = None
         self._dataThread = None
 
-    def open(self):
+    def open(self, on_data_fn):
         '''
-        Attempts to open the port (self.port) and starts to store data after fix.
+        Attempts to open the port (self.port) with asynchronous serialDataThread
+        and starts to store data after fix. If on_data_fn is utilized, serialGPS
+        will NOT add to data.
+
+        Args:
+            on_data_fn: (optional) Function to run when a valid message is
+            received. Function gets the received message as an NMEA object
         '''
         try:
             if self._ser != None:
@@ -41,7 +49,7 @@ class serialGPS:
             if self._dataThread != None:
                 self.dataThread.stop()
             self._dataThread = serialDataThread(self)
-            self._dataThread.start()
+            self._dataThread.start(on_data_fn)
         except serial.serialutil.SerialException:
             if self._ser != None:
                 self._ser.close()
@@ -50,6 +58,14 @@ class serialGPS:
                 self.dataThread.stop()
             self._dataThread = None
             raise SerialGPSOpenError()
+
+    def readData(self):
+        '''
+        Reads and clears buffered messages from the GPS.
+        '''
+        data = list(self.data)
+        self.data = []
+        return data
 
     def close(self):
         '''
@@ -64,7 +80,10 @@ class serialGPS:
 
 class serialDataThread(Thread):
     '''
-    serialDataThread: Non-blocking thread designed to read the serial data from the GPS unit
+    serialDataThread: Non-blocking (asynchronous) thread designed to read the
+    serial data from the GPS unit. Either calls on_data_fn when valid data is
+    received or adds it the serialGPS.data buffer.
+
     Attributes:
         sGPS: serialGPS object we are modifying
         _stop: (private) event to stop the thread
@@ -75,7 +94,7 @@ class serialDataThread(Thread):
         self._stop = threading.Event()
 
     # Run: reads lines from the GPS and processes and adds messages
-    def run(self):
+    def run(self, on_data_fn):
         self._stop.clear()
         line = self.sGPS._ser.readline().decode().strip()
         while not self._stop.isSet() and len(line) > 0 and self.sGPS._ser != None:
@@ -83,7 +102,10 @@ class serialDataThread(Thread):
             if type(x) is GGA:
                 self.sGPS.sat_fix = (x.fix_quality != 0)
                 if self.sGPS.sat_fix:
-                    self.sGPS.data.append(x)
+                    if on_data_fn:
+                        on_data_fn(x);
+                    else:
+                        self.sGPS.data.append(x)
             try:
                 line = self.sGPS._ser.readline().decode().strip()
             except TypeError:
@@ -94,5 +116,5 @@ class serialDataThread(Thread):
 
 class SerialGPSOpenError(FileNotFoundError):
     '''
-    SerialGPSOpenError: Error for when serial port cannot be opened
+    Error for when serial port cannot be opened
     '''
