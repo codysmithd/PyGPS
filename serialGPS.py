@@ -114,7 +114,7 @@ class serialDataThread(Thread):
     def stop(self):
         self._stop.set()
 
-class SerialGPSOpenError(FileNotFoundError):
+class SerialGPSOpenError(IOError):
     '''
     Error for when serial port cannot be opened
     '''
