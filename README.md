@@ -1,4 +1,4 @@
-#PyGPS
+# PyGPS
 PyGPS is a package of GPS tools for Python. It contains the following:
 
 **[serialGPS](#serialgps)**  
@@ -7,12 +7,12 @@ PyGPS is a package of GPS tools for Python. It contains the following:
 **[Example Program](#example-program)**  
   
   
-##serialGPS
+## serialGPS
 Provides interface with any serial-connected GPS module. The serialGPS object reads from the GPS on a separate thread, so it is designed to be non-blocking.
 
 **Requirement: [pyserial](https://github.com/pyserial/pyserial)**
 
-####Usage: 
+#### Usage: 
 First, the serialGPS object is created with the path to the port where the GPS module is connected:
 ```python
 s = serialGPS('/dev/tty-usbMYPORT')
@@ -30,7 +30,7 @@ Finally, when done reading from the port, simply call:
 s.close()
 ```
 
-##NMEA
+## NMEA
 Contains classes for dealing with NMEA sentences and other relevant data. Currently contains:
 - **Point**
   - *lat*: Latitude (decimal value)
@@ -48,7 +48,7 @@ Contains classes for dealing with NMEA sentences and other relevant data. Curren
   - *checkum*: message checksum
   - *valid*: Is the checksum valid, and was the object created ok otherwise
 
-##kmlIO
+## kmlIO
 Provides methods for converting PyGPS data to Keyhole Markup Language (KML) files. Currently includes the following methods:
 
 `pointsToKML(points, filename)`: Converts a list of points to a KML file.  
@@ -57,7 +57,7 @@ Provides methods for converting PyGPS data to Keyhole Markup Language (KML) file
 *[Learn more about KML here](https://developers.google.com/kml/)*
 
 ## Example program:
-###recorder.py
+### recorder.py
 Recorder is an example program which connects to a GPS module over serial, and records the incoming points until the user stops it. Usage is as follows:
 
 ```
